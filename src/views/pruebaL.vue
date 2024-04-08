@@ -13,9 +13,24 @@
               <i class="bx bx-user"></i>
             </div>
             <div class="input_box">
-              <input type="number" id="importancia" v-model="importancia" placeholder="Importancia" required />
-              <i class="bx bx-user"></i>
-            </div>
+  <label>
+    <input type="radio" name="importancia" value="1" v-model="importancia" />
+    Muy importante
+  </label>
+</div>
+<div class="input_box">
+  <label>
+    <input type="radio" name="importancia" value="2" v-model="importancia" />
+    Poco importante
+  </label>
+</div>
+<div class="input_box">
+  <label>
+    <input type="radio" name="importancia" value="3" v-model="importancia" />
+    Nada importante
+  </label>
+</div>
+
             <div class="input_box">
               <input type="date" id="fechaTermino" v-model="fechaTermino" required />
               <i class="bx bx-calendar"></i>
@@ -35,7 +50,7 @@
   
   let titulo = ref('')
   let descripcion = ref('')
-  let importancia = ref(0)
+  let importancia = ref('1'); // Inicializado con el valor predeterminado
   let fechaTermino = ref('')
   let usuarioID = ref(1) // Puedes obtener el ID del usuario desde la sesión o de donde corresponda
   let act = ref<IActividad | null>(null)
@@ -77,6 +92,58 @@
   </script>
   
   <style scoped>
-  /* Estilos CSS aquí */
+  /* Estilos para el formulario */
+  .InicioSesion {
+    max-width: 400px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centrar el formulario horizontalmente */
+    padding: 20px;
+    background-color: #f4f4f4; /* Color de fondo del formulario */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+  
+  .Formulario {
+    margin-top: 20px;
+  }
+  
+  .input_box {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .input_box input,
+  .input_box textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Borde del campo de entrada */
+    border-radius: 5px; /* Bordes redondeados del campo de entrada */
+  }
+  
+  .input_box textarea {
+    resize: none; /* Evitar que el usuario pueda redimensionar el área de texto */
+  }
+  
+  .input_box i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #888; /* Color del ícono */
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3; /* Cambiar el color de fondo al pasar el cursor sobre el botón */
+  }
+  
   </style>
+  
   

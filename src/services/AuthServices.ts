@@ -47,12 +47,29 @@ export default {
         }
       });
       if (!response.data.success) {
-        console.log("La creación de la actividad falló."); // Puedes agregar manejo de errores específico aquí si lo deseas
+        console.log("La creación de la actividad Existoso."); // Puedes agregar manejo de errores específico aquí si lo deseas
       } else {
         console.log("La actividad se ha creado exitosamente."); // Puedes agregar manejo de éxito específico aquí si lo deseas
       }
     } catch (error) {
       console.error('Error al crear la actividad:', error);
+    }
+  }
+  ,
+  async registerUsuario(newUser: IUser): Promise<void> {
+    try {
+      const response = await axios.post(`${API_URL}/CrearUsuario`, newUser, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.data.success) {
+        console.log("La creación fue exitoso."); // Puedes agregar manejo de errores específico aquí si lo deseas
+      } else {
+        console.log("El Usuario se ha creado exitosamente."); // Puedes agregar manejo de éxito específico aquí si lo deseas
+      }
+    } catch (error) {
+      console.error('Error al crear la usuario:', error);
     }
   }
   

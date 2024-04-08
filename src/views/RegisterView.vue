@@ -66,7 +66,7 @@ async function registerUser() {
       Correo: email.value,
       FechaCreacion: new Date() // Se podría enviar la fecha desde el backend
     };
-    user.value = await UserService.registerUser(newUser);
+    user.value = await UserService.registerUsuario(newUser);
     
     // Redirigir al usuario a la página de inicio de sesión después de un registro exitoso
     router.push('/Login');
