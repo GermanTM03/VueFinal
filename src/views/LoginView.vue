@@ -3,28 +3,46 @@
     <div class="InicioSesion">
       <img src="../assets/icons/Icon_principal.png" alt="" />
       <div class="Formulario">
-        <form action="">
+        <form @submit.prevent="loginUsuario">
           <div class="input_box">
-            <input type="text" placeholder="Usuario" required />
+            <input type="email" placeholder="Correo" v-model="correo" required />
             <i class="bx bx-user"></i>
           </div>
           <div class="input_box">
-            <input type="password" placeholder="Contraseña" required />
+            <input type="password" placeholder="Contraseña" v-model="contraseña" required />
             <i class="bx bxs-lock-alt"></i>
           </div>
+          <p v-if="mensajeError" style="color: red;">{{ mensajeError }}</p>
 
           <button type="submit">Ingresar</button>
         </form>
       </div>
       <div class="Pregunta">
-        <p>No tienes cuenta? <a href="/Registro ">Regístrate</a></p>
+        <p>No tienes cuenta? <router-link to="/Registro">Regístrate</router-link></p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import AuthServices from '@/services/AuthServices'
 
+const correo = ref<string>('');
+const contraseña = ref<string>('');
+const mensajeError = ref<string>('');
+const router = useRouter();
+
+const loginUsuario = async () => {
+  const exito = await AuthServices.login(correo.value, contraseña.value);
+  if (!exito) {
+    mensajeError.value = 'Credenciales incorrectas';
+  } else {
+    alert('Inicio de sesión exitoso');
+    router.push('/index');
+  }
+}
 </script>
 
 <style scoped>

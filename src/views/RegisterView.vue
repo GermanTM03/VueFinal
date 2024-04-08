@@ -3,21 +3,25 @@
     <div class="InicioSesion">
       <img src="../assets/icons/Icon_principal.png" alt="" />
       <div class="Formulario">
-        <form action="">
+        <div v-if="user">
+      <p><strong>Name:</strong> {{ user.Usuario }}</p>
+      <p><strong>Email:</strong> {{ user.Correo }}</p>
+    </div>
+    <form @submit.prevent="registerUser">
           <div class="input_box">
-            <input type="text" placeholder="Usuario" required />
+            <input type="text" id="name"  v-model="name" placeholder="Usuario" required />
             <i class="bx bx-user"></i>
           </div>
           <div class="input_box">
-            <input type="email" placeholder="Correo" required />
+            <input type="email" placeholder="Correo" id="email" v-model="email" required />
             <i class="bx bx-user"></i>
           </div>
           <div class="input_box">
-            <input type="password" placeholder="Contraseña" required />
+            <input type="password" placeholder="Contraseña" id="password" v-model="password" required />
             <i class="bx bxs-lock-alt"></i>
           </div>
           <div class="input_box">
-            <input type="password" placeholder="Repite Contraseña" required />
+            <input type="password" placeholder="Repite Contraseña" id="confirmPassword" v-model="confirmPassword"  required />
             <i class="bx bxs-lock-alt"></i>
           </div>
 
@@ -32,7 +36,50 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import UserService from '@/services/AuthServices'
+import type IUser from '@/interface/IUser'
+import { useRouter } from 'vue-router'
 
+let name = ref('')
+let email = ref('')
+let password = ref('')
+let confirmPassword = ref('')
+let user = ref<IUser | null>(null)
+
+const router = useRouter()
+
+async function registerUser() {
+  try {
+    if (password.value !== confirmPassword.value) {
+      throw new Error('La contraseña y la confirmación de contraseña no coinciden');
+    }
+    
+    if (!name.value || !email.value || !password.value || !confirmPassword.value) {
+      throw new Error('Todos los campos son obligatorios');
+    }
+
+    const newUser: IUser = {
+      ID: 0, // Se podría dejar como 0 o como undefined, dependiendo de si se asigna en el backend o no
+      Usuario: name.value,
+      Contraseña: password.value,
+      Correo: email.value,
+      FechaCreacion: new Date() // Se podría enviar la fecha desde el backend
+    };
+    user.value = await UserService.registerUser(newUser);
+    
+    // Redirigir al usuario a la página de inicio de sesión después de un registro exitoso
+    router.push('/Login');
+
+    // Limpiar los campos después del registro exitoso
+    name.value = ''
+    email.value = ''
+    password.value = ''
+    confirmPassword.value = ''
+  } catch (error) {
+    console.error('No se pudo registrar el usuario:', error)
+  }
+}
 </script>
 
 <style scoped>
